@@ -64,7 +64,6 @@ spec:
                 PAPERLESS_OCR_LANGUAGE: "eng"
                 PAPERLESS_OCR_LANGUAGES: "eng fra deu spa ita"
                 PAPERLESS_ENABLE_HTTP_REMOTE_USER: true
-                PAPERLESS_LOGOUT_REDIRECT_URL: "${PSLOURL}"
     cnpg:
       main:
         mode: recovery
