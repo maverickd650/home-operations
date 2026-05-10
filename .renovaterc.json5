@@ -12,6 +12,7 @@
     'github>MaverickD650/home-operations//.renovate/labels.json5',
     'github>MaverickD650/home-operations//.renovate/overrides.json5',
     'github>MaverickD650/home-operations//.renovate/semanticCommits.json5',
+    'github>MaverickD650/home-operations//.renovate/talosFactory.json5',
     'github>MaverickD650/home-operations//.renovate/upgradeBlock.json5',
     ':automergeBranch',
     ':disableRateLimiting',

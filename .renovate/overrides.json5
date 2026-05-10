@@ -8,12 +8,6 @@
       "overrideDepName": "{{packageName}}"
     },
     {
-      "description": "Override Talos Installer Package Name",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/factory\\.talos\\.dev/"],
-      "overridePackageName": "ghcr.io/siderolabs/installer"
-    },
-    {
       "description": "Keep CloudNativePG individual images on the correct minimal-trixie series",
       "matchPackageNames": ["ghcr.io/cloudnative-pg/postgresql"],
       "separateMajorMinor": true,
