@@ -7,6 +7,7 @@ metadata:
   labels:
     grafana.internal/instance: grafana
 spec:
+  version: "13.0.1"
   config:
     analytics:
       check_for_updates: "false"
