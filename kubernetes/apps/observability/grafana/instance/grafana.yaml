@@ -53,27 +53,27 @@ spec:
                 - name: GF_SECURITY_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-admin
+                      name: grafana-secret
                       key: GF_SECURITY_ADMIN_PASSWORD
                 - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-admin
+                      name: grafana-secret
                       key: client-id
                 - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-admin
+                      name: grafana-secret
                       key: client-secret
                 - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-admin
+                      name: grafana-secret
                       key: auth-url
                 - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-admin
+                      name: grafana-secret
                       key: token-url
               securityContext:
                 allowPrivilegeEscalation: false
