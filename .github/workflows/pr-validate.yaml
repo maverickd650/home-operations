@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: bash ./scripts/kubeconform.sh ${{ env.KUBERNETES_DIR }}
   flux-test:
-    name: Flux Local - Test
+    name: Flate - Test
     runs-on: ubuntu-latest
     environment: bot
     permissions:
@@ -62,18 +62,12 @@ jobs:
           substitutionRegex: '\$\{(\w+)\}'
           substitutionData: '{"S3URL":"https://placeholder.example"}'
           throwOnDataMissing: false
-      - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v8.2.0@sha256:9c77739d8d7c71b808311693ea52d603d1ddb5190d3d4f23e47f6f33d5254602
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+      - name: Install flate
+        uses: home-operations/flate/action@main
         with:
-          args: >-
-            test
-            --all-namespaces
-            --api-versions=monitoring.coreos.com/v1
-            --enable-helm
-            --path /github/workspace/kubernetes/flux/cluster
-            --sources "flux-system"
+          version: latest
+      - name: Flate Test
+        run: flate test all --path ./kubernetes --allow-missing-secrets
       - name: Undo any changes (if needed)
         run: |
           git checkout -- ./kubernetes
@@ -87,13 +81,8 @@ jobs:
     strategy:
       matrix:
         resource:
-          - helmrelease
-          - kustomization
-        include:
-          - resource: helmrelease
-            extraArgs: "--api-versions=monitoring.coreos.com/v1"
-          - resource: kustomization
-            extraArgs: ""
+          - hr
+          - ks
       fail-fast: false
     steps:
       - name: Generate Token
@@ -129,39 +118,60 @@ jobs:
           substitutionRegex: '\$\{(\w+)\}'
           substitutionData: '{"S3URL":"https://placeholder.example"}'
           throwOnDataMissing: false
-
-      - name: Run flux-local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v8.2.0@sha256:9c77739d8d7c71b808311693ea52d603d1ddb5190d3d4f23e47f6f33d5254602
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+      - name: Install flate
+        uses: home-operations/flate/action@main
         with:
-          args: >
-            diff ${{ matrix.resource }}
-            --unified 6
-            --path /github/workspace/pull/kubernetes/flux/cluster
-            --path-orig /github/workspace/default/kubernetes/flux/cluster
-            --strip-attrs "helm.sh/chart,checksum/config,checksum/redis,checksum/secrets,app.kubernetes.io/version,chart,app"
-            --limit-bytes 10000
-            --all-namespaces
-            --sources "flux-system"
-            ${{ matrix.extraArgs }}
-            --output-file diff.patch
-      - name: Generate Diff
-        id: diff
-        run: |-
-          echo 'diff<<EOF' >> $GITHUB_OUTPUT
-          echo '```diff' >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-      - if: ${{ steps.diff.outputs.diff != '' }}
+          version: latest
+      - name: Flate Diff
+        run: flate diff ${{ matrix.resource }} --path /github/workspace/pull/kubernetes --path-orig /github/workspace/default/kubernetes --allow-missing-secrets --strip-attr --limit-bytes -o json > diff.json
+      - name: Build grouped diff comment output
+        id: diff_comment
+        run: |
+          set -e
+
+          # Merge matrix outputs
+          if ls diff*.json 1> /dev/null 2>&1; then
+            jq -s 'add' diff*.json > merged.json
+          else
+            cp diff.json merged.json
+          fi
+
+          # Build grouped markdown
+          COMMENT=$(jq -r '
+            def render($title):
+              if length == 0 then
+                ""
+              else
+                "## " + $title + "\n\n" +
+                map(
+                  "### \(.namespace // "default")/\(.name)\n\n```diff\n\(.diff)\n```"
+                ) | join("\n\n")
+              end;
+
+            {
+              hr: map(select(.type == "hr")),
+              ks: map(select(.type == "ks"))
+            } |
+            (
+              (if .hr | length > 0 then (.hr | render("HelmRelease (hr)")) else "" end) +
+              "\n\n" +
+              (if .ks | length > 0 then (.ks | render("Kustomization (ks)")) else "" end)
+            )
+          ' merged.json)
+
+          # Safe export to GITHUB_OUTPUT
+          {
+            echo "comment<<EOF"
+            echo "$COMMENT"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - if: ${{ steps.diff_comment.outputs.comment != '' }}
         name: Add Comment
         uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
         with:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resource }}
-          message: ${{ steps.diff.outputs.diff }}
+          message: ${{ steps.diff_comment.outputs.comment }}
 
   automerge-and-approve:
     needs:
