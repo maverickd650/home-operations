@@ -37,8 +37,43 @@ jobs:
       - name: Run kubeconform
         shell: bash
         run: bash ./scripts/kubeconform.sh ${{ env.KUBERNETES_DIR }}
-  flate:
-    name: Flate
+  flate-test:
+    name: Flate - Test
+    runs-on: ubuntu-latest
+    environment: bot
+    permissions:
+      contents: read
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ vars.BOT_APP_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+      - name: Substitute placeholder
+        uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
+        with:
+          input: 'kubernetes/**/*.yaml'
+          substitutionRegex: '\$\{(\w+)\}'
+          substitutionData: '{"S3URL":"https://placeholder.example"}'
+          throwOnDataMissing: false
+      - name: Setup Mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with:
+          tool_versions: |
+            github:home-operations/flate latest
+      - name: Flate Test
+        run: flate test all --path ./kubernetes --allow-missing-secrets
+      - name: Undo any changes (if needed)
+        run: |
+          git checkout -- ./kubernetes
+  flate-diff:
+    name: Flate - Diff
     runs-on: ubuntu-latest
     environment: bot
     permissions:
@@ -117,7 +152,7 @@ jobs:
   automerge-and-approve:
     needs:
       - kubeconform
-      - flate
+      - flate-test
     permissions:
       pull-requests: write
       contents: write
