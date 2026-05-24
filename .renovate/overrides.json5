@@ -10,10 +10,10 @@
       }
     },
     {
-      "description": "Ignore duff Rancher shell image",
+      "description": "Block Rancher shell 7.x",
       "matchPackageNames": ["docker.io/rancher/shell"],
       "matchDatasources": ["docker"],
-      "ignoreVersions": ["v7.0.0"]
+      "allowedVersions": "<7.0.0"
     }
   ]
 }
