@@ -1,7 +1,9 @@
 ---
 # yaml-language-server: $schema=https://schema.maverickd650.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
-kind: Heame: feedcord
+kind: HelmRelease
+metadata:
+  name: feedcord
 spec:
   interval: 1h
   chartRef:
