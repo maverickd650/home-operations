@@ -85,7 +85,7 @@ jobs:
           tool_versions: |
             github:home-operations/flate latest
       - name: Flate Test
-        run: flate test all --path ./kubernetes --allow-missing-secrets
+        run: flate test all --path ./kubernetes --allow-missing-secrets --log-level debug
       - name: Undo any changes (if needed)
         run: |
           git checkout -- ./kubernetes
