@@ -62,10 +62,11 @@ jobs:
           substitutionRegex: '\$\{(\w+)\}'
           substitutionData: '{"S3URL":"https://placeholder.example"}'
           throwOnDataMissing: false
-      - name: Install flate
-        uses: home-operations/flate/action@main
+      - name: Setup Mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
-          version: latest
+          tool_versions: |
+            github:home-operations/flate latest
       - name: Flate Test
         run: flate test all --path ./kubernetes --allow-missing-secrets
       - name: Undo any changes (if needed)
@@ -81,8 +82,8 @@ jobs:
     strategy:
       matrix:
         resource:
-          - hr
-          - ks
+          - helmrelease
+          - kustomization
       fail-fast: false
     steps:
       - name: Generate Token
@@ -118,60 +119,28 @@ jobs:
           substitutionRegex: '\$\{(\w+)\}'
           substitutionData: '{"S3URL":"https://placeholder.example"}'
           throwOnDataMissing: false
-      - name: Install flate
-        uses: home-operations/flate/action@main
+      - name: Setup Mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
-          version: latest
-      - name: Flate Diff
-        run: flate diff ${{ matrix.resource }} --path /github/workspace/pull/kubernetes --path-orig /github/workspace/default/kubernetes --allow-missing-secrets --strip-attr --limit-bytes -o json > diff.json
-      - name: Build grouped diff comment output
-        id: diff_comment
+          tool_versions: |
+            github:home-operations/flate latest
+      - name: Run flate diff
+        id: diff
+        env:
+          RESOURCE: ${{ matrix.resource }}
         run: |
-          set -e
-
-          # Merge matrix outputs
-          if ls diff*.json 1> /dev/null 2>&1; then
-            jq -s 'add' diff*.json > merged.json
-          else
-            cp diff.json merged.json
-          fi
-
-          # Build grouped markdown
-          COMMENT=$(jq -r '
-            def render($title):
-              if length == 0 then
-                ""
-              else
-                "## " + $title + "\n\n" +
-                map(
-                  "### \(.namespace // "default")/\(.name)\n\n```diff\n\(.diff)\n```"
-                ) | join("\n\n")
-              end;
-
-            {
-              hr: map(select(.type == "hr")),
-              ks: map(select(.type == "ks"))
-            } |
-            (
-              (if .hr | length > 0 then (.hr | render("HelmRelease (hr)")) else "" end) +
-              "\n\n" +
-              (if .ks | length > 0 then (.ks | render("Kustomization (ks)")) else "" end)
-            )
-          ' merged.json)
-
-          # Safe export to GITHUB_OUTPUT
           {
-            echo "comment<<EOF"
-            echo "$COMMENT"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-      - if: ${{ steps.diff_comment.outputs.comment != '' }}
+            echo 'diff<<EOF'
+            flate diff "$RESOURCE" --path ./pull --path-orig ./default --allow-missing-secrets
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+      - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add Comment
         uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
         with:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resource }}
-          message: ${{ steps.diff_comment.outputs.comment }}
+          message: ${{ steps.diff.outputs.diff }}
 
   automerge-and-approve:
     needs:
