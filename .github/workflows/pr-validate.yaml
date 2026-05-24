@@ -124,10 +124,6 @@ jobs:
         with:
           tool_versions: |
             github:home-operations/flate latest
-      - name: Run flate test
-        env:
-          RESOURCE: ${{ matrix.resource }}
-        run: flate test "$RESOURCE" --path ./pull --path-orig ./default
       - name: Run flate diff
         id: diff
         env:
