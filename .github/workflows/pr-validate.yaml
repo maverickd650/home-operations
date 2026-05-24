@@ -4,8 +4,8 @@ name: "Pull Request: Validate"
 
 on:
   pull_request:
-    branches: ["main"]
-    paths: ["kubernetes/**"]
+    branches:
+      - main
 concurrency:
   group: ${{ github.head_ref }}-pr-validate
   cancel-in-progress: true
@@ -13,7 +13,19 @@ env:
   KUBERNETES_DIR: ./kubernetes
 
 jobs:
+  filter:
+    name: Filter
+    runs-on: ubuntu-latest
+    outputs:
+      changed-files: ${{ steps.changed-files.outputs.changed_files }}
+    steps:
+      - name: Get Changed Files
+        id: changed-files
+        uses: bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+        with:
+          patterns: kubernetes/**/*
   kubeconform:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
     name: Kubeconform
     runs-on: ubuntu-latest
     permissions:
@@ -38,6 +50,8 @@ jobs:
         shell: bash
         run: bash ./scripts/kubeconform.sh ${{ env.KUBERNETES_DIR }}
   flate-test:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
     name: Flate - Test
     runs-on: ubuntu-latest
     environment: bot
