@@ -2,12 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": "Override Helmfile Dependency Name",
-      "matchDatasources": ["docker"],
-      "matchManagers": ["helmfile"],
-      "overrideDepName": "{{packageName}}"
-    },
-    {
       "description": "Keep CloudNativePG individual images on the correct minimal-trixie series",
       "matchPackageNames": ["ghcr.io/cloudnative-pg/postgresql"],
       "separateMajorMinor": true,
