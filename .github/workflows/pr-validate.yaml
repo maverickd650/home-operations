@@ -140,7 +140,10 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           header: ${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resource }}
-          message: ${{ steps.diff.outputs.diff }}
+          message: |
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
 
   automerge-and-approve:
     needs:
