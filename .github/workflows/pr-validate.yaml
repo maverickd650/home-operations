@@ -26,6 +26,7 @@ jobs:
           patterns: kubernetes/**/*
   kubeconform:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
     name: Kubeconform
     runs-on: ubuntu-latest
     permissions:
