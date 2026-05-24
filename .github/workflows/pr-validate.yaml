@@ -123,7 +123,7 @@ jobs:
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           tool_versions: |
-            github:home-operations/flate 0.1.10
+            github:home-operations/flate latest
       - name: Run flate diff
         id: diff
         env:
@@ -131,7 +131,7 @@ jobs:
         run: |
           {
             echo 'diff<<EOF'
-            flate diff "$RESOURCE" --path ./pull --path-orig ./default --allow-missing-secrets
+            flate diff "$RESOURCE" --path ./pull --path-orig ./default --allow-missing-secrets --log-level debug
             echo 'EOF'
           } >> $GITHUB_OUTPUT
       - if: ${{ steps.diff.outputs.diff != '' }}
