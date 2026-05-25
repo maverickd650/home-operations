@@ -3,17 +3,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: fluent-bit
+  name: victoria-logs-collector
 spec:
   interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.57.6
-  url: oci://ghcr.io/fluent/helm-charts/fluent-bit
-  verify:
-    provider: cosign
-    matchOIDCIdentity:
-      - issuer: ^https://token.actions.githubusercontent.com$
-        subject: ^https://github\.com/action-stars/helm-workflows/\.github/workflows/release\.yaml@.+
+    tag: 0.3.4
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-logs-collector
