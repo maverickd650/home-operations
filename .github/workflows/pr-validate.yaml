@@ -90,6 +90,8 @@ jobs:
         run: |
           git checkout -- ./kubernetes
   flate-diff:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
     name: Flate - Diff
     runs-on: ubuntu-latest
     environment: bot
