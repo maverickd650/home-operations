@@ -4,8 +4,8 @@ name: "Pull Request: Validate"
 
 on:
   pull_request:
-    branches: ["main"]
-    paths: ["kubernetes/**"]
+    branches:
+      - main
 concurrency:
   group: ${{ github.head_ref }}-pr-validate
   cancel-in-progress: true
@@ -13,7 +13,20 @@ env:
   KUBERNETES_DIR: ./kubernetes
 
 jobs:
+  filter:
+    name: Filter
+    runs-on: ubuntu-latest
+    outputs:
+      changed-files: ${{ steps.changed-files.outputs.changed_files }}
+    steps:
+      - name: Get Changed Files
+        id: changed-files
+        uses: bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+        with:
+          patterns: kubernetes/**/*
   kubeconform:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
     name: Kubeconform
     runs-on: ubuntu-latest
     permissions:
@@ -38,6 +51,8 @@ jobs:
         shell: bash
         run: bash ./scripts/kubeconform.sh ${{ env.KUBERNETES_DIR }}
   flate-test:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
     name: Flate - Test
     runs-on: ubuntu-latest
     environment: bot
@@ -55,20 +70,22 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: false
+          sparse-checkout: kubernetes/
       - name: Substitute placeholder
         uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
         with:
-          input: 'kubernetes/**/*.yaml'
+          input: '**/*.yaml'
           substitutionRegex: '\$\{(\w+)\}'
           substitutionData: '{"S3URL":"https://placeholder.example"}'
           throwOnDataMissing: false
       - name: Setup Mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
+          cache: false
           tool_versions: |
             github:home-operations/flate latest
       - name: Flate Test
-        run: flate test all --path ./kubernetes --allow-missing-secrets
+        run: flate test all --path ./kubernetes --allow-missing-secrets --log-level debug
       - name: Undo any changes (if needed)
         run: |
           git checkout -- ./kubernetes
@@ -81,7 +98,7 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        resource:
+        kind:
           - helmrelease
           - kustomization
       fail-fast: false
@@ -98,6 +115,7 @@ jobs:
           path: pull
           persist-credentials: false
           token: ${{ steps.app-token.outputs.token }}
+          sparse-checkout: kubernetes/
       - name: Substitute placeholder
         uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
         with:
@@ -112,6 +130,7 @@ jobs:
           path: default
           persist-credentials: false
           token: ${{ steps.app-token.outputs.token }}
+          sparse-checkout: kubernetes/
       - name: Substitute placeholder
         uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
         with:
@@ -122,28 +141,59 @@ jobs:
       - name: Setup Mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
+          cache: false
           tool_versions: |
             github:home-operations/flate latest
       - name: Run flate diff
         id: diff
         env:
-          RESOURCE: ${{ matrix.resource }}
+          KIND: ${{ matrix.kind }}
         run: |
           {
             echo 'diff<<EOF'
-            flate diff "$RESOURCE" --path ./pull --path-orig ./default --allow-missing-secrets
+            flate diff "$KIND" --path ./pull --path-orig ./default --allow-missing-secrets
             echo 'EOF'
           } >> $GITHUB_OUTPUT
       - if: ${{ steps.diff.outputs.diff != '' }}
-        name: Add Comment
-        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
+        name: Add or Update Comment
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          DIFF: ${{ steps.diff.outputs.diff }}
+          KIND: ${{ matrix.kind }}
         with:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          header: ${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resource }}
-          message: |
-            ```diff
-            ${{ steps.diff.outputs.diff }}
-            ```
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const { DIFF, KIND } = process.env;
+            const label = { helmrelease: "HelmRelease", kustomization: "Kustomization" }[KIND];
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const pr = context.payload.pull_request;
+            const sha = pr.head.sha;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const marker = `<!-- Sticky Pull Request Comment${issue_number}/kubernetes/${KIND} -->`;
+            const body = [
+              marker,
+              `<details open><summary>${label} diff</summary>`,
+              ``,
+              "```diff",
+              DIFF,
+              "```",
+              ``,
+              `</details>`,
+              ``,
+              `<sub>Generated for [\`${sha.slice(0, 7)}\`](${pr.html_url}/commits/${sha}) · [workflow run](${runUrl})</sub>`,
+            ].join("\n");
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100,
+            });
+            const existing = comments.find(c => c.body?.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
 
   automerge-and-approve:
     needs:
