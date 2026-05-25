@@ -83,7 +83,7 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            github:home-operations/flate latest
+            github:home-operations/flate latest --allow-missing-secrets
       - name: Flate Test
         run: flate test all --path ./kubernetes
       - name: Undo any changes (if needed)
@@ -145,7 +145,7 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            github:home-operations/flate latest
+            github:home-operations/flate latest --allow-missing-secrets
       - name: Run flate diff
         id: diff
         env:
