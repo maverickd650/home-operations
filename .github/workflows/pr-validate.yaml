@@ -85,7 +85,7 @@ jobs:
           tool_versions: |
             github:home-operations/flate latest
       - name: Flate Test
-        run: flate test all --path ./kubernetes --allow-missing-secrets --log-level debug
+        run: flate test all --path ./kubernetes
       - name: Undo any changes (if needed)
         run: |
           git checkout -- ./kubernetes
@@ -153,7 +153,7 @@ jobs:
         run: |
           {
             echo 'diff<<EOF'
-            flate diff "$KIND" --path ./pull --path-orig ./default --allow-missing-secrets
+            flate diff "$KIND" --path ./pull --path-orig ./default
             echo 'EOF'
           } >> $GITHUB_OUTPUT
       - if: ${{ steps.diff.outputs.diff != '' }}
