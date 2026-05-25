@@ -12,7 +12,7 @@ metadata:
 spec:
   images:
     - major: 18
-      image: ghcr.io/cloudnative-pg/postgresql:18.4-minimal-trixie@sha256:7a91b8daee8589f4825b50da23ed545b57c43a126016af573cbdf5e424d6c2f6
+      image: ghcr.io/cloudnative-pg/postgresql:18.4-minimal-trixie@sha256:e14f3ed42b14f3abeefc56468af42deb2abc3d9eddf2c465b875b2f0ec3ce3f6
       extensions:
         - name: pgvector
           image:
@@ -28,6 +28,6 @@ spec:
             - name: PROJ_DATA
               value: ${image_root}/share/proj
     - major: 17
-      image: ghcr.io/cloudnative-pg/postgresql:17.10-minimal-trixie@sha256:87240ec8b857faae40bdd5239fc12c2968e7cb96855b4bf8dd2f4ddca8dfbe40
+      image: ghcr.io/cloudnative-pg/postgresql:17.10-minimal-trixie@sha256:f5a180cf01aa3a206957cfe05bf6046de2f925e90952b8c24ed409c05e93df80
     - major: 16
       image: ghcr.io/cloudnative-pg/postgresql:16.14-minimal-trixie@sha256:1ea2dcf580e34ac2865592b8f2503aaa8218cd72c313109bf64df487fefdafd8
