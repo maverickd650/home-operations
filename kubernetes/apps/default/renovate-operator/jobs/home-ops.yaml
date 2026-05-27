@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -60,6 +61,8 @@ spec:
   discoveryFilters:
     - "maverickd650/home-operations"
   extraEnv:
+    - name: RENOVATE_ALLOWED_ENV
+      value: MISE_TRUSTED_CONFIG_PATHS
     - name: RENOVATE_CONFIG_FILE
       value: /config/config.js
     - name: RENOVATE_PERSIST_REPO_DATA
