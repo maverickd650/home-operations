@@ -16,6 +16,8 @@ jobs:
   filter:
     name: Filter
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       changed-files: ${{ steps.changed-files.outputs.changed_files }}
     steps:
@@ -36,17 +38,11 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          sparse-checkout: kubernetes/
       - name: Install arkade
         uses: alexellis/setup-arkade@b1816384b2260cfd2c023c6798d26075786cfc7f # v3
       - name: Setup Workflow Tools
         run: arkade get kubeconform kustomize
-      - name: Substitute placeholder
-        uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
-        with:
-          input: 'kubernetes/**/*.yaml'
-          substitutionRegex: '\$\{(\w+)\}'
-          substitutionData: '{"SECRET_DOMAIN":"placeholder.example"}'
-          throwOnDataMissing: false
       - name: Run kubeconform
         shell: bash
         run: bash ./scripts/kubeconform.sh ${{ env.KUBERNETES_DIR }}
@@ -71,24 +67,14 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: false
           sparse-checkout: kubernetes/
-      - name: Substitute placeholder
-        uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
-        with:
-          input: '**/*.yaml'
-          substitutionRegex: '\$\{(\w+)\}'
-          substitutionData: '{"S3URL":"https://placeholder.example"}'
-          throwOnDataMissing: false
       - name: Setup Mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           cache: false
           tool_versions: |
-            github:home-operations/flate 0.1.24
+            github:home-operations/flate 0.1.25
       - name: Flate Test
         run: flate test all --path ./kubernetes --allow-missing-secrets
-      - name: Undo any changes (if needed)
-        run: |
-          git checkout -- ./kubernetes
   flate-diff:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
     needs: filter
@@ -118,13 +104,6 @@ jobs:
           persist-credentials: false
           token: ${{ steps.app-token.outputs.token }}
           sparse-checkout: kubernetes/
-      - name: Substitute placeholder
-        uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
-        with:
-          input: 'pull/kubernetes/apps/**/*.yaml'
-          substitutionRegex: '\$\{(\w+)\}'
-          substitutionData: '{"S3URL":"https://placeholder.example"}'
-          throwOnDataMissing: false
       - name: Checkout Default Branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -133,19 +112,12 @@ jobs:
           persist-credentials: false
           token: ${{ steps.app-token.outputs.token }}
           sparse-checkout: kubernetes/
-      - name: Substitute placeholder
-        uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
-        with:
-          input: 'default/kubernetes/apps/**/*.yaml'
-          substitutionRegex: '\$\{(\w+)\}'
-          substitutionData: '{"S3URL":"https://placeholder.example"}'
-          throwOnDataMissing: false
       - name: Setup Mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           cache: false
           tool_versions: |
-            github:home-operations/flate 0.1.24
+            github:home-operations/flate 0.1.25
       - name: Run flate diff
         id: diff
         env:
