@@ -79,7 +79,7 @@ jobs:
           cache: false
           install: false
       - name: Install Flate
-        run: mise install github:home-operations/flate@0.1.25
+        run: mise use -g github:home-operations/flate@0.1.25
       - name: Flate Test
         run: flate test all --path ./kubernetes --allow-missing-secrets
   flate-diff:
@@ -125,7 +125,7 @@ jobs:
           cache: false
           install: false
       - name: Install Flate
-        run: mise install github:home-operations/flate@0.1.25
+        run: mise use -g github:home-operations/flate@0.1.25
       - name: Run flate diff
         id: diff
         env:
