@@ -15,5 +15,6 @@
     "yaml.schemas": {
         "kubernetes": "./kubernetes/**/*.yaml"
     },
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv"
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+    "sops.binPath": "/Users/donald/.local/share/mise/shims/sops"
 }
