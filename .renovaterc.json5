@@ -1,5 +1,11 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  allowedEnv: [
+    "MISE_TRUSTED_CONFIG_PATHS"
+  ],
+  env: {
+    MISE_TRUSTED_CONFIG_PATHS: "/tmp/renovate/repos"
+  },
   extends: [
     'github>home-operations/renovate-presets//config/baseConfig.json5',
     'github>home-operations/renovate-presets//config/dependencyDashboard.json5',
