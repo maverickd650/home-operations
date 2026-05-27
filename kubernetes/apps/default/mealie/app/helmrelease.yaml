@@ -21,7 +21,7 @@ spec:
     credentials:
       s3:
         type: s3
-        url: "${S3URL}"
+        url: "https://${S3URL2}"
         bucket: "${S3PREFIX}-mealie"
         accessKey: "${S3ID}"
         secretKey: "${S3KEY}"
