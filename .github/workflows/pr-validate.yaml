@@ -40,6 +40,13 @@ jobs:
           persist-credentials: false
       - name: Install arkade
         uses: alexellis/setup-arkade@b1816384b2260cfd2c023c6798d26075786cfc7f # v3
+      - name: Substitute placeholder
+        uses: faradaytrs/substitute-secrets-action@dd57c74e8bd9a5987c202c80b1b336eb6ec8b5cf # 2.7
+        with:
+          input: 'kubernetes/**/*.yaml'
+          substitutionRegex: '\$\{(\w+)\}'
+          substitutionData: '{"SECRET_DOMAIN":"placeholder.example"}'
+          throwOnDataMissing: false
       - name: Setup Workflow Tools
         run: arkade get kubeconform kustomize
       - name: Run kubeconform
