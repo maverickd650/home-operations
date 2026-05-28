@@ -45,10 +45,9 @@ jobs:
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           cache: false
+          install_args: "github:home-operations/flate"
           tool_versions: |
             github:home-operations/flate latest
-        env:
-          MISE_ENABLE_TOOLS: "flate"
       - name: Flate Test
         run: flate test all --path ./kubernetes --allow-missing-secrets
   flate-diff:
@@ -92,10 +91,9 @@ jobs:
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           cache: false
+          install_args: "github:home-operations/flate"
           tool_versions: |
             github:home-operations/flate latest
-        env:
-          MISE_ENABLE_TOOLS: "flate"
       - name: Run flate diff
         id: diff
         env:
