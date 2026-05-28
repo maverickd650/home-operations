@@ -18,7 +18,7 @@ jobs:
     name: Filter
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read # required to read the repository contents to see changed files
     outputs:
       changed-files: ${{ steps.changed-files.outputs.changed_files }}
     steps:
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: bot
     permissions:
-      contents: read
+      contents: read # required to read the repository contents to run tests
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -57,8 +57,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: bot
     permissions:
-      contents: read
-      pull-requests: write
+      contents: read # required to read the repository contents to generate diffs
+      pull-requests: write # required to write diff comments to pull requests
     strategy:
       matrix:
         kind:
@@ -149,8 +149,8 @@ jobs:
     needs:
       - flate-test
     permissions:
-      pull-requests: write
-      contents: write
+      pull-requests: write # required to automerge pull requests
+      contents: write # required to write to the repository
     name: Automerge and Approve build
     runs-on: ubuntu-latest
     environment: bot

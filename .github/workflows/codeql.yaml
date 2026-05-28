@@ -7,6 +7,10 @@ on:
   schedule:
     - cron: '30 6 * * *'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -15,8 +19,8 @@ jobs:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
-      packages: read
+      security-events: write # required to upload results to GitHub Security tab
+      packages: read # required to read package metadata during analysis
     strategy:
       fail-fast: false
       matrix:
