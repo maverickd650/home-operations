@@ -136,7 +136,16 @@ jobs:
 
   automerge-and-approve:
     needs:
+      - filter
       - flate-test
+    if: >-
+      ${{
+        always() &&
+        (
+          needs.filter.outputs.changed-files == '[]' ||
+          needs.flate-test.result == 'success'
+        )
+      }}
     permissions:
       pull-requests: write # required to automerge pull requests
       contents: write # required to write to the repository
