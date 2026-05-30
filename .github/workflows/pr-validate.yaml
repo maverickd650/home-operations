@@ -140,7 +140,7 @@ jobs:
     permissions:
       pull-requests: write # required to automerge pull requests
       contents: write # required to write to the repository
-    name: Automerge and Approve build
+    name: Automerge
     runs-on: ubuntu-latest
     environment:
       name: bot
