@@ -32,7 +32,6 @@ jobs:
     needs: filter
     name: Flate - Test
     runs-on: ubuntu-latest
-    environment: bot
     permissions:
       contents: read # required to read the repository contents to run tests
     steps:
