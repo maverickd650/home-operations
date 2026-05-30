@@ -41,7 +41,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Setup Flate
-        uses: home-operations/flate/action@1b82172827df79c030dd50c20dadb148ed800217 # 0.1.33
+        uses: home-operations/flate/action@d378c445e5028358006125694cd2ace441bbf957 # 0.1.34
         with:
           cache: true
       - name: Flate Test
@@ -80,7 +80,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Setup Flate
-        uses: home-operations/flate/action@1b82172827df79c030dd50c20dadb148ed800217 # 0.1.33
+        uses: home-operations/flate/action@d378c445e5028358006125694cd2ace441bbf957 # 0.1.34
         with:
           cache: true
       - name: Run flate diff
