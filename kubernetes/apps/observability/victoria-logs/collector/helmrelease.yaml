@@ -24,6 +24,5 @@ spec:
         - kubernetes.pod_namespace
         - kubernetes.container_name
         - kubernetes.pod_labels.app.kubernetes.io/name
-      excludeFilter: "kubernetes.pod_name:~'foundryvtt-.*'"
     extraArgs:
       "kubernetesCollector.decolorizeFields": _msg
