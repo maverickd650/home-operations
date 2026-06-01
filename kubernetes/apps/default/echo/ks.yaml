@@ -15,6 +15,6 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: flux-system-test
-    namespace: common
+    namespace: system
   targetNamespace: default
   wait: false
