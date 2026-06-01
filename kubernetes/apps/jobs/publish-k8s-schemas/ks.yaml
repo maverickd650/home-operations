@@ -12,7 +12,7 @@ spec:
   path: "./kubernetes/apps/jobs/publish-k8s-schemas/app"
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: jobs
