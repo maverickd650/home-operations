@@ -13,8 +13,8 @@ spec:
         kind: Secret
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
+    kind: OCIRepository
+    name: flux-system-test
+    namespace: common
   targetNamespace: default
   wait: false
