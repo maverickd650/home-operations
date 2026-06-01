@@ -25,9 +25,6 @@ metadata:
   name: flux-system-test
 spec:
   interval: 1h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
   ref:
     tag: latest
   url: oci://ghcr.io/maverickd650/home-operations
