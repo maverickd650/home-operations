@@ -87,6 +87,7 @@ jobs:
         id: diff
         env:
           FLATE_PATH: ./kubernetes/flux/cluster
+          FLATE_OUTPUT: github
         run: |
           {
             echo 'diff<<EOF'
