@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/monitoring.coreos.com/podmonitor_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/podmonitor_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -9,11 +9,11 @@ spec:
     matchLabels:
       "cnpg.io/cluster": mealie-cnpg-main
   podMetricsEndpoints:
-  - port: metrics
-    scheme: http
-    tlsConfig:
-      ca:
-        secret:
-          name: mealie-cnpg-main-ca
-          key: ca.crt
-      serverName: mealie-cnpg-main-rw
+    - port: metrics
+      scheme: http
+      tlsConfig:
+        ca:
+          secret:
+            name: mealie-cnpg-main-ca
+            key: ca.crt
+        serverName: mealie-cnpg-main-rw

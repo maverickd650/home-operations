@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/dragonflydb.io/dragonfly_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
@@ -26,7 +26,7 @@ spec:
     limits:
       memory: 512Mi
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/dragonflydb.io/dragonfly_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:

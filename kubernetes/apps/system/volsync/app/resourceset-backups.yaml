@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/fluxcd.controlplane.io/resourceset_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/fluxcd.controlplane.io/resourceset_v1.json
 # ResourceSet for VolSync backups
 # Automated backups to S3 with Garage for improved performance and deduplication
 # Backup window: daily at 7:00 AM (schedule configurable per-app in resourceset-inputprovider.yaml)
@@ -31,7 +31,7 @@ spec:
   inputsFrom:
     - name: volsync-apps
 
-  resourcesTemplate: |
+  resourcesTemplate: |-
     <<- range $app := inputs.apps >>
     ---
     # ExternalSecret for S3 repository credentials

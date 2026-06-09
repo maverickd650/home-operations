@@ -10,7 +10,7 @@ data:
       cacheDir: '/cache/renovate',
     };
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/generators.external-secrets.io/githubaccesstoken_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/generators.external-secrets.io/githubaccesstoken_v1alpha1.json
 apiVersion: generators.external-secrets.io/v1alpha1
 kind: GithubAccessToken
 metadata:
@@ -24,7 +24,7 @@ spec:
         name: mavbot-pem # reference secret from step 1.
         key: private_key_pem
 ---
-# yaml-language-server: $schema=http://schema.maverickd650.dev/external-secrets.io/externalsecret_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
@@ -104,7 +104,7 @@ spec:
     authentication:
       enabled: false
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/renovate-operator.mogenius.com/renovatejob_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/renovate-operator.mogenius.com/renovatejob_v1alpha1.json
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:

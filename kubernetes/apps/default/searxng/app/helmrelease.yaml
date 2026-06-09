@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://schema.maverickd650.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -26,7 +26,7 @@ spec:
             runAsGroup: *uid
             fsGroup: *uid
             fsGroupChangePolicy: OnRootMismatch
-            seccompProfile: { type: RuntimeDefault }
+            seccompProfile: {type: RuntimeDefault}
         strategy: RollingUpdate
         containers:
           main:
@@ -87,8 +87,8 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-            - identifier: main
-              port: *port
+              - identifier: main
+                port: *port
     persistence:
       config:
         type: configMap
@@ -101,7 +101,7 @@ spec:
     configMaps:
       config:
         data:
-          settings.yml: |
+          settings.yml: |-
             use_default_settings: true
 
             server:
