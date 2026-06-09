@@ -25,7 +25,7 @@ kustomize = "5.8.1"
 lefthook = "2.1.9"
 kubectl = "1.36.1"
 yq = "4.53.3"
-talosctl = "1.13.3"
+talosctl = "1.13.4"
 kubeconform = "0.8.0"
 zizmor = "1.25.2"
 
