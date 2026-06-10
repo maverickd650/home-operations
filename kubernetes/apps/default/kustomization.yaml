@@ -12,6 +12,7 @@ resources:
   - ./echo/ks.yaml
   - ./feedcord/ks.yaml
   - ./homepage/ks.yaml
+  - ./konflate/ks.yaml
   - ./linkwarden/ks.yaml
   - ./mealie/ks.yaml
   - ./renovate-operator/ks.yaml
