@@ -7,10 +7,11 @@ metadata:
   namespace: system
 spec:
   dependsOn:
-    # Wait for ExternalSecrets CRD and ClusterSecretStore to be ready before applying alerts
-    - apiVersion: apiextensions.k8s.io/v1
-      kind: CustomResourceDefinition
-      name: externalsecrets.external-secrets.io
+    # Wait for ExternalSecrets and ClusterSecretStore to be ready before applying alerts
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: external-secrets
+      namespace: security
       ready: true
     - apiVersion: external-secrets.io/v1
       kind: ClusterSecretStore
