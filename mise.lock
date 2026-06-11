@@ -681,7 +681,7 @@ checksum = "sha256:422d79dff5afd5a55fb46ae1cfacc7350ec96d4ef27a63a3ec77a5c30a7b0
 url = "https://github.com/go-task/task/releases/download/v3.51.1/task_windows_amd64.zip"
 
 [[tools.uv]]
-version = "0.11.20"
+version = "0.11.21"
 backend = "asdf:uv"
 
 [[tools.yq]]
