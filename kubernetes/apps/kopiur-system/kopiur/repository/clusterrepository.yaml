@@ -7,7 +7,7 @@ metadata:
 spec:
   backend:
     filesystem:
-      path: /repo
+      path: /
       volume:
         nfs:
           server: 192.168.50.118
