@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/fluxcd.controlplane.io/resourceset_v1.json
+# ResourceSet for app PVCs inclusive of backup and restore policies using Kopiur
+# Creates PVCs with dataSourceRef for automatic restore during cluster bootstrap
+# App definitions are shared via the kopiur-apps ResourceSetInputProvider
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSet
+metadata:
+  name: kopiur-pvcs
+  namespace: kopiur-system
+spec:
+  dependsOn:
+    # Wait for Kopiur to be ready
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: kopiur
+      namespace: kopiur-system
+      ready: true
+
+  # Health checks - wait for generated resources to be ready
+  wait: true
+
+  # Reference the consolidated InputProvider with all app configurations
+  # To add a new app: add entry to the apps array in resourceset-inputprovider.yaml
+  # To remove an app: delete entry from the apps array in resourceset-inputprovider.yaml
+  inputsFrom:
+    - name: kopiur-apps
+
+  # Loop through all apps and create both ReplicationDestination and PVC
+  resourcesTemplate: |-
+    <<- range $app := inputs.apps >>
+    ---
+    # Policy for snapshot backup
+    apiVersion: kopiur.home-operations.com/v1alpha1
+    kind: SnapshotPolicy
+    metadata:
+      name: << $app.app >>
+      namespace: << get $app "namespace" | default "default" >>
+    spec:
+      repository:
+        kind: ClusterRepository
+        name: << get $app "repository" | default "nas" >>
+      credentialProjection:
+        enabled: true
+      sources:
+        - pvc:
+            name: << $app.app >>-<< get $app "pvcSuffix" | default inputs.defaults.pvcSuffix >>
+      copyMethod: Snapshot
+      volumeSnapshotClassName: longhorn
+      mover:
+        securityContext:
+          runAsUser: << get $app "runAsUser" | default inputs.defaults.runAsUser >>
+          runAsGroup: << get $app "runAsGroup" | default inputs.defaults.runAsGroup >>
+          runAsNonRoot: << get $app "runAsNonRoot" | default inputs.defaults.runAsNonRoot >>
+        podSecurityContext:
+          fsGroup: << get $app "fsGroup" | default inputs.defaults.fsGroup >>
+      retention:
+        keepDaily: 7
+        keepWeekly: 4
+    ---
+    # Restore for bootstrap restore
+    apiVersion: kopiur.home-operations.com/v1alpha1
+    kind: Restore
+    metadata:
+      name: << $app.app >>-boot
+      namespace: << get $app "namespace" | default "default" >>
+      labels:
+        kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+    spec:
+      source:
+        fromPolicy:
+          name: << $app.app >>
+          offset: 0
+      target:
+        populator: {}
+      policy:
+        onMissingSnapshot: Continue
+      credentialProjection:
+        enabled: true
+    ---
+    # PVC with conditional dataSourceRef for automatic bootstrap
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: << printf "%s-%s" $app.app (get $app "pvcSuffix" | default inputs.defaults.pvcSuffix) >>
+      namespace: << get $app "namespace" | default "default" >>
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      dataSourceRef:
+        apiGroup: kopiur.home-operations.com
+        kind: Restore
+        name: << $app.app >>-boot
+      storageClassName: longhorn
+      resources:
+        requests:
+          storage: << get $app "capacity" | default inputs.defaults.capacity >>
+    ---
+    # Policy for snapshot timing
+    apiVersion: kopiur.home-operations.com/v1alpha1
+    kind: SnapshotSchedule
+    metadata:
+      name: << $app.app >>
+      namespace: << get $app "namespace" | default "default" >>
+    spec:
+      policyRef:
+        name: << $app.app >>
+      schedule:
+        cron: "<< get $app "schedule" | default inputs.defaults.schedule >>"
+        jitter: 2m
+        timezone: "Europe/London"
+        runOnCreate: false
+    <<- end >>
