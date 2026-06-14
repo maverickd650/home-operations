@@ -6,4 +6,4 @@ resources:
   - ./clusterrepository.yaml
   - ./externalsecret.yaml
   # - ./resourceset.yaml
-  # - ./resourcesetinputprovider.yaml
+  - ./resourcesetinputprovider.yaml
