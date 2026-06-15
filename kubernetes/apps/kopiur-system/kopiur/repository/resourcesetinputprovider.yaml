@@ -27,7 +27,7 @@ spec:
       capacity: "100Gi"
       schedule: "H 2 * * *"
       pvcSuffix: "config"
-      repository: "nas"
+      repository: "b2"
       runAsNonRoot: "true"
     apps:
       - app: home-test

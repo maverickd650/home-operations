@@ -39,7 +39,7 @@ spec:
     spec:
       repository:
         kind: ClusterRepository
-        name: << get $app "repository" | default "nas" >>
+        name: << get $app "repository" | default "b2" >>
       credentialProjection:
         enabled: true
       sources:
