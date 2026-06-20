@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rss2discord
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: rss2discord
+  upgrade:
+    cleanupOnFail: true
+  values: {}
