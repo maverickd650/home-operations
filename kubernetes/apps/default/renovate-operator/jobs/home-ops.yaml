@@ -120,6 +120,7 @@ spec:
     - "maverickd650/feedcord"
     - "maverickd650/homepage-config"
     - "maverickd650/feedcord-config"
+    - "maverickd650/rss2discord-operator"
   extraEnv:
     - name: RENOVATE_ALLOWED_COMMANDS
       value: '["pnpm run bundle"]'
