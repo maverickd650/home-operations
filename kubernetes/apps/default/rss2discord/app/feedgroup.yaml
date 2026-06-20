@@ -11,9 +11,8 @@ spec:
   interval: "30m"
   retries: 3
   retryInterval: "5m"
-  format: |
-    **{{.Title}}**
-    {{.Description}}
-    [Read more]({{.Link}})
+  embed:
+    enabled: true
+    color: "#5865F2"
   feeds:
     - rssUrl: "https://www.theguardian.com/uk/rss"
