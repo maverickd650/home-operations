@@ -1,0 +1,19 @@
+---
+apiVersion: rss2discord.maverickd650.dev/v1alpha1
+kind: FeedGroup
+metadata:
+  name: tech-news-test
+  namespace: default
+spec:
+  discordWebhookSecretRef:
+    name: rss2discord-secret
+    key: tech-webhook
+  interval: "30m"
+  retries: 3
+  retryInterval: "5m"
+  format: |
+    **{{.Title}}**
+    {{.Description}}
+    [Read more]({{.Link}})
+  feeds:
+    - rssUrl: "https://www.theguardian.com/uk/rss"
