@@ -11,4 +11,10 @@ spec:
     name: rss2discord
   upgrade:
     cleanupOnFail: true
-  values: {}
+  values:
+    prometheus:
+      enabled: true
+    prometheusRule:
+      enabled: true
+    grafanaDashboard:
+      enabled: true
