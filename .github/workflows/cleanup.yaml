@@ -10,7 +10,7 @@ on:
 jobs:
   clean:
     runs-on: ubuntu-latest
-    name: Delete old test images
+    name: Delete old GHCR images
     permissions:
       contents: read
       packages: write # for deleting packages
