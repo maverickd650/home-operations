@@ -16,5 +16,5 @@ resources:
   - ./linkwarden/ks.yaml
   - ./mealie/ks.yaml
   - ./renovate-operator/ks.yaml
-  - ./rss2discord/ks.yaml
+  # - ./rss2discord/ks.yaml
   - ./searxng/ks.yaml
