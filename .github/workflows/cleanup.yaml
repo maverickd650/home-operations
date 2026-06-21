@@ -1,8 +1,11 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Package Cleanup"
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 * * * *" # every hour
+    - cron: "0 5 * * *"
 
 jobs:
   clean:
@@ -28,4 +31,4 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           image-names: "home-operations"
           cut-off: 1w
-          dry-run: true
+          dry-run: false
