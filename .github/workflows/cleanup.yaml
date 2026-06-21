@@ -27,7 +27,7 @@ jobs:
           permission-packages: write
       - uses: snok/container-retention-policy@d3bdcf5ce9b05f685154e4a16c39233b245e3d53 # v3.1.0
         with:
-          account: user
+          account: maverickd650
           token: ${{ steps.app-token.outputs.token }}
           image-names: "home-operations"
           cut-off: 1w
