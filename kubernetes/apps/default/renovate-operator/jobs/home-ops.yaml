@@ -119,7 +119,6 @@ spec:
     - "maverickd650/cluster-docs"
     - "maverickd650/feedcord"
     - "maverickd650/homepage-config"
-    - "maverickd650/rss2discord-config"
     - "maverickd650/rss2discord-operator"
     - "maverickd650/kubepage-operator"
   extraEnv:
