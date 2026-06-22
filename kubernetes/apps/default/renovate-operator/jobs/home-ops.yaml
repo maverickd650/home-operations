@@ -121,6 +121,7 @@ spec:
     - "maverickd650/homepage-config"
     - "maverickd650/rss2discord-config"
     - "maverickd650/rss2discord-operator"
+    - "maverickd650/kubepage-operator"
   extraEnv:
     - name: RENOVATE_ALLOWED_COMMANDS
       value: '["pnpm run bundle"]'
