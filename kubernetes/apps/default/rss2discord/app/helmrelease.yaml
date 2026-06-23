@@ -17,7 +17,7 @@ spec:
     prometheusRule:
       enabled: true
     grafanaDashboard:
-      enabled: true
+      enabled: false
       allowCrossNamespaceImport: true
       instanceSelector:
         matchLabels:
