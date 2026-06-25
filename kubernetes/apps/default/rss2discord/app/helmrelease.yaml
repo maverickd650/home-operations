@@ -11,6 +11,9 @@ spec:
     name: rss2discord
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
+  install:
+    crds: CreateReplace
   values:
     prometheus:
       enabled: true
