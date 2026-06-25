@@ -35,36 +35,8 @@ url = "https://github.com/FiloSottile/age/releases/download/v1.3.1/age-v1.3.1-wi
 provenance = "github-attestations"
 
 [[tools.cilium-cli]]
-version = "0.19.4"
+version = "0.19.5"
 backend = "aqua:cilium/cilium-cli"
-
-[tools.cilium-cli."platforms.linux-arm64"]
-checksum = "sha256:866c86683aa63c943a94ca2af5dc2b0db3483d1c3ed8c72baeeabd13061a7e42"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-linux-arm64.tar.gz"
-
-[tools.cilium-cli."platforms.linux-arm64-musl"]
-checksum = "sha256:866c86683aa63c943a94ca2af5dc2b0db3483d1c3ed8c72baeeabd13061a7e42"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-linux-arm64.tar.gz"
-
-[tools.cilium-cli."platforms.linux-x64"]
-checksum = "sha256:98ecd554591a592b0ee32f5d73871133bcee06639619f1c032bcba339340dc26"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-linux-amd64.tar.gz"
-
-[tools.cilium-cli."platforms.linux-x64-musl"]
-checksum = "sha256:98ecd554591a592b0ee32f5d73871133bcee06639619f1c032bcba339340dc26"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-linux-amd64.tar.gz"
-
-[tools.cilium-cli."platforms.macos-arm64"]
-checksum = "sha256:9e58b4b8cb6d926946b2e59eb25fc2fb923965d3e000e00325e0227704fcd318"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-darwin-arm64.tar.gz"
-
-[tools.cilium-cli."platforms.macos-x64"]
-checksum = "sha256:8070f03216142069c96a3f42d89a1387a74afd0007fd59e485ca63675b1dd5ce"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-darwin-amd64.tar.gz"
-
-[tools.cilium-cli."platforms.windows-x64"]
-checksum = "sha256:52b924f382d2f323f4b374c875cb29d8da754b5914c0b9466b7f265924d40050"
-url = "https://github.com/cilium/cilium-cli/releases/download/v0.19.4/cilium-windows-amd64.zip"
 
 [[tools.cloudflared]]
 version = "2026.6.1"
