@@ -35,6 +35,7 @@ spec:
               UPLOAD_PATH: /app/data/uploads
               METRICS_ENABLED: "true"
               OTEL_METRICS_EXPORTER: "prometheus"
+              ALLOW_DOWNGRADE: "true"
             envFrom:
               - secretRef:
                   name: pocket-secret
