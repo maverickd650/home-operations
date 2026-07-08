@@ -123,6 +123,8 @@ spec:
     - "maverickd650/rss2discord-operator"
     - "maverickd650/kubepage-operator"
   extraEnv:
+    - name: RENOVATE_ALLOWED_ENV
+      value: MISE_TRUSTED_CONFIG_PATHS
     - name: RENOVATE_ALLOWED_COMMANDS
       value: '["pnpm run bundle"]'
     - name: RENOVATE_ALLOW_PLUGINS
