@@ -14,3 +14,21 @@ spec:
     matchOIDCIdentity:
       - issuer: "https://token.actions.githubusercontent.com"
         subject: "^https://github.com/maverickd650/kubepage-operator.*$"
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: kubepage-config
+spec:
+  interval: 1h
+  ref:
+    tag: latest
+  url: oci://ghcr.io/maverickd650/kubepage-config
+  secretRef:
+    name: ghcr-kubepage
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "^https://github.com/MaverickD650/homepage-config.*$"
