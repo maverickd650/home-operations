@@ -12,4 +12,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
-  values: {}
+  values:
+    monitoring:
+      serviceMonitor:
+        enabled: true
