@@ -61,6 +61,7 @@ spec:
                 PAPERLESS_ADMIN_USER: "${PSADMINU}"
                 PAPERLESS_ADMIN_PASSWORD: "${PSADMINP}"
                 PAPERLESS_ADMIN_MAIL: "${PSADMINE}"
+                PAPERLESS_DBENGINE: postgresql
                 PAPERLESS_OCR_LANGUAGE: "eng"
                 PAPERLESS_OCR_LANGUAGES: "eng fra deu spa ita"
                 PAPERLESS_ENABLE_HTTP_REMOTE_USER: true
