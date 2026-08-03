@@ -28,6 +28,6 @@ spec:
             - name: PROJ_DATA
               value: ${image_root}/share/proj
     - major: 17
-      image: ghcr.io/cloudnative-pg/postgresql:17.10-minimal-trixie@sha256:b09dc735793bf50834240ff2fb044e4d9055420d9b73db544a599779506dbc54
+      image: ghcr.io/cloudnative-pg/postgresql:17.10-minimal-trixie@sha256:290cb4a074295581f34bdc2bbbe7d86aaf2c72f44bf039bc687f0aef40f48ee9
     - major: 16
       image: ghcr.io/cloudnative-pg/postgresql:16.14-minimal-trixie@sha256:f10e421bfb635b9c3f314093eed540142c94db1dc723cb7a934b10081cc8bf6d
