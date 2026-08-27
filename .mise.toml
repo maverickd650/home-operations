@@ -7,7 +7,7 @@ TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
 [tools]
 python = "3.14.7"
 uv = "0.12.2"
-pipx = "1.16.6"
+pipx = "1.16.7"
 talhelper = "3.1.16"
 cilium-cli = "0.19.7"
 cloudflared = "2026.7.3"
