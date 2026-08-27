@@ -8,8 +8,6 @@
     'github>home-operations/renovate-presets//apps/grafanaDashboards.json5#8.1.0',
     'github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0',
     'github>home-operations/renovate-presets//apps/searxng.json5#8.1.0',
-    'github>MaverickD650/home-operations//.renovate/autoMerge.json5',
-    'github>MaverickD650/home-operations//.renovate/groups.json5',
     'github>MaverickD650/home-operations//.renovate/labels.json5',
     'github>MaverickD650/home-operations//.renovate/overrides.json5',
     'github>MaverickD650/home-operations//.renovate/upgradeBlock.json5',
