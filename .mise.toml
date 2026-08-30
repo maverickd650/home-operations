@@ -27,7 +27,7 @@ kubectl = "1.37.0"
 yq = "4.53.6"
 talosctl = "1.13.9"
 kubeconform = "0.8.0"
-zizmor = "1.29.0"
+zizmor = "1.30.0"
 
 [hooks]
 postinstall = "lefthook install"
