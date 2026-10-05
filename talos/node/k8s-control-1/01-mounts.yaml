@@ -1,0 +1,15 @@
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+provisioning:
+  diskSelector:
+    match: disk.model == "CT2000T500SSD8"  && !system_disk
+  grow: true
+  minSize: 1.2TB
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+mount:
+  secure: false

@@ -1,0 +1,23 @@
+apiVersion: v1alpha1
+kind: KubeletConfig
+config:
+  crashLoopBackOff:
+    maxContainerRestartPeriod: 60s
+  imageMaximumGCAge: 168h
+  maxParallelImagePulls: 3
+  serializeImagePulls: false
+  shutdownGracePeriod: 90s
+  shutdownGracePeriodCriticalPods: 60s
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+    - 192.168.50.0/24
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+extraArgs:
+  enable-aggregator-routing: "true"
+  feature-gates: HPAScaleToZero=true
+  runtime-config: admissionregistration.k8s.io/v1beta1=true

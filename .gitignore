@@ -19,4 +19,6 @@ talosconfig
 .venv/
 .DS_Store
 Thumbs.db
+/talos/output/
+/talos/rendered/
 *.idea
