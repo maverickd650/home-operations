@@ -14,10 +14,3 @@ kind: KubeNodeConfig
 nodeIP:
   validSubnets:
     - 192.168.50.0/24
----
-apiVersion: v1alpha1
-kind: KubeAPIServerConfig
-extraArgs:
-  enable-aggregator-routing: "true"
-  feature-gates: HPAScaleToZero=true
-  runtime-config: admissionregistration.k8s.io/v1beta1=true
