@@ -69,19 +69,19 @@ spec:
     name: github-status
   eventSources:
     - kind: Kustomization
-      name: 'echo'
+      name: "echo"
     - kind: Kustomization
-      name: 'homepage'
+      name: "homepage"
     - kind: Kustomization
-      name: 'feedcord'
+      name: "rss2discord"
     - kind: Kustomization
-      name: 'linkwarden'
+      name: "linkwarden"
     - kind: Kustomization
-      name: 'mealie'
+      name: "mealie"
     - kind: Kustomization
-      name: 'renovate-operator'
+      name: "renovate-operator"
     - kind: Kustomization
-      name: 'renovate-operator-jobs'
+      name: "renovate-operator-jobs"
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
@@ -94,7 +94,7 @@ spec:
     name: github-status-homepage
   eventSources:
     - kind: Kustomization
-      name: 'homepage-config'
+      name: "homepage-config"
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
@@ -107,4 +107,4 @@ spec:
     name: github-status-feedcord
   eventSources:
     - kind: Kustomization
-      name: 'feedcord-config'
+      name: "rss2discord-config"
