@@ -26,7 +26,6 @@ spec:
     - namespace: "cert-manager"
     - namespace: "default"
     - namespace: "flux-system"
-    - namespace: "jobs"
     - namespace: "kube-system"
     - namespace: "longhorn-system"
     - namespace: "media"
@@ -70,9 +69,9 @@ spec:
         eventSeverity: info
         eventSources:
           - kind: HelmRelease
-            name: '*'
+            name: "*"
           - kind: Kustomization
-            name: '*'
+            name: "*"
         eventMetadata:
           summary: "Cluster Alert"
         exclusionList:
@@ -89,10 +88,10 @@ spec:
         eventSeverity: error
         eventSources:
           - kind: GitRepository
-            name: '*'
+            name: "*"
           - kind: HelmRelease
-            name: '*'
+            name: "*"
           - kind: Kustomization
-            name: '*'
+            name: "*"
           - kind: OCIRepository
-            name: '*'
+            name: "*"

@@ -25,7 +25,6 @@ spec:
   inputs:
     - namespace: "cert-manager"
     - namespace: "flux-system"
-    - namespace: "jobs"
     - namespace: "kube-system"
     - namespace: "longhorn-system"
     - namespace: "media"
@@ -75,4 +74,4 @@ spec:
           name: github-status
         eventSources:
           - kind: Kustomization
-            name: '*'
+            name: "*"
