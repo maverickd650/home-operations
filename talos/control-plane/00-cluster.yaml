@@ -15,7 +15,10 @@ taints:
 apiVersion: v1alpha1
 kind: KubeAdmissionControlConfig
 name: PodSecurity
-$patch: delete
+configuration:
+  defaults:
+    audit: "baseline"
+    warn: "baseline"
 ---
 apiVersion: v1alpha1
 kind: KubeAPIServerConfig
