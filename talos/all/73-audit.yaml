@@ -1,0 +1,54 @@
+---
+# Audit policy: drop high-volume, low-value traffic, keep metadata for
+# everything else. Rules are evaluated in order; first match wins.
+# https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/
+apiVersion: v1alpha1
+kind: KubeAuditPolicyConfig
+configuration:
+  apiVersion: audit.k8s.io/v1
+  kind: Policy
+  # Log each request once (at completion), not on receipt as well
+  omitStages:
+    - RequestReceived
+  rules:
+    # Health probes, version and OpenAPI discovery
+    - level: None
+      nonResourceURLs:
+        - /healthz*
+        - /livez*
+        - /readyz*
+        - /version
+        - /openapi/*
+    # Leader election and heartbeats
+    - level: None
+      resources:
+        - group: coordination.k8s.io
+          resources: ["leases"]
+    # Events are already persisted as objects
+    - level: None
+      resources:
+        - group: ""
+          resources: ["events"]
+        - group: events.k8s.io
+          resources: ["events"]
+    # Authorization checks made on behalf of other components
+    - level: None
+      resources:
+        - group: authorization.k8s.io
+          resources: ["subjectaccessreviews", "selfsubjectaccessreviews"]
+    # Long-running watches
+    - level: None
+      verbs: ["watch"]
+    # Sensitive objects: who touched them, never their contents.
+    # Must sit above the read-drop rule so secret reads are still logged.
+    - level: Metadata
+      resources:
+        - group: ""
+          resources: ["secrets", "configmaps", "serviceaccounts/token"]
+        - group: authentication.k8s.io
+          resources: ["tokenreviews"]
+    # Remaining reads (controller reconcile loops)
+    - level: None
+      verbs: ["get", "list"]
+    # All writes: create/update/patch/delete, incl. PodSecurity annotations
+    - level: Metadata
