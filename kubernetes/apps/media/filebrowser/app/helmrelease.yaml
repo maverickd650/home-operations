@@ -107,6 +107,7 @@ spec:
                     createUserDir: true
             http:
               port: 80
+              trustProxyHeaders: true
             auth:
               methods:
                 oidc:
