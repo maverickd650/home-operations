@@ -50,11 +50,11 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
-  name: github-status-feedcord
+  name: github-status-rss2discord
   namespace: default
 spec:
   type: github
-  address: https://github.com/MaverickD650/feedcord-config
+  address: https://github.com/maverickd650/rss2discord-config
   secretRef:
     name: github-status-token-secret
 ---
@@ -100,11 +100,11 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: github-status-feedcord
+  name: github-status-rss2discord
   namespace: default
 spec:
   providerRef:
-    name: github-status-feedcord
+    name: github-status-rss2discord
   eventSources:
     - kind: Kustomization
       name: "rss2discord-config"
