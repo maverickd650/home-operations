@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gtsteffaniak/filebrowser
-              tag: 1.5.8-stable@sha256:68455d4953bad8e984e1bc5d112ed1e9c918a0a04f104c13c9ece50790308894
+              tag: 2.0.0-stable@sha256:9d42f635e32913d7daf05259428b6c70061cfdca3affc9602b4c31717e0a4bae
             env:
               FILEBROWSER_CONFIG: /config/config.yaml
             envFrom:
@@ -47,7 +47,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -68,10 +68,6 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |
-            client:
-              dns-resolver: tcp://${UNIFI_HOST}:53
         hostnames:
           - "files.${SECRET_DOMAIN}"
         parentRefs:
@@ -84,42 +80,46 @@ spec:
             ---
             server:
               port: 80
-              database: /data/database.db
-              cacheDir: /config/cache
+              database:
+                path: "/data/filebrowser.sqlite"
+                migrateFrom: "/data/database.db.old"
+              cacheDir: "/config/cache"
               sources:
-                - path: /mnt/stash1
+                - path: "/mnt/stash1"
                   config:
                     denyByDefault: true
-                - path: /mnt/stash2
+                - path: "/mnt/stash2"
                   config:
                     denyByDefault: true
-                - path: /mnt/media
+                - path: "/mnt/media"
                   config:
                     denyByDefault: true
-                - path: /mnt/books
+                - path: "/mnt/books"
                   config:
                     denyByDefault: true
-                - path: /mnt/docsc
+                - path: "/mnt/docsc"
                   config:
                     denyByDefault: true
-                - path: /mnt/docss
+                - path: "/mnt/docss"
                   config:
                     denyByDefault: true
-                - path: /mnt/home
+                - path: "/mnt/home"
                   config:
                     defaultEnabled: true
                     createUserDir: true
+            http:
+              port: 80
             auth:
               methods:
                 oidc:
                   enabled: true
-                  issuerUrl: https://pocket.${SECRET_DOMAIN}
-                  scopes: openid profile email groups
-                  userIdentifier: preferred_username
+                  issuerUrl: "https://pocket.${SECRET_DOMAIN}"
+                  scopes: "openid profile email groups"
+                  userIdentifier: "preferred_username"
                   createUser: true
-                  logoutRedirectUrl: https://pocket.${SECRET_DOMAIN}/api/oidc/end-session
-                  groupsClaim: groups
-                  adminGroup: admin
+                  logoutRedirectUrl: "https://pocket.${SECRET_DOMAIN}/api/oidc/end-session"
+                  groupsClaim: "groups"
+                  adminGroup: "admin"
     persistence:
       data:
         type: persistentVolumeClaim
