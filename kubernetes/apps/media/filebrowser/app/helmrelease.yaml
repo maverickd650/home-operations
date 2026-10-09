@@ -79,7 +79,6 @@ spec:
           config.yaml: |
             ---
             server:
-              port: 80
               database:
                 path: "/data/filebrowser.sqlite"
                 migrateFrom: "/data/database.db.old"
