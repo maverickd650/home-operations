@@ -13,7 +13,7 @@ spec:
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: haos
+  name: haos-ipv4
   labels:
     kubernetes.io/service-name: haos
 addressType: IPv4
@@ -24,6 +24,24 @@ ports:
 endpoints:
   - addresses:
       - "${HAOSIP}"
+    conditions:
+      ready: true
+      serving: true
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: haos-ipv6
+  labels:
+    kubernetes.io/service-name: haos
+addressType: IPv6
+ports:
+  - name: http
+    protocol: TCP
+    port: 8123
+endpoints:
+  - addresses:
+      - "${HAOSIPV6}"
     conditions:
       ready: true
       serving: true
