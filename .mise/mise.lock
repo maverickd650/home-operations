@@ -711,9 +711,9 @@ url_api = "https://api.github.com/repos/getsops/sops/releases/assets/486808200"
 url = "https://github.com/getsops/sops/releases/download/v3.13.3/sops-v3.13.3.intoto.jsonl"
 
 [[tools.talosctl]]
-version = "1.14.3"
+version = "1.14.4"
 backend = "aqua:siderolabs/talos"
-specifiers = ["1.14.3"]
+specifiers = ["1.14.4"]
 
 [tools.talosctl."platforms.linux-arm64"]
 provenance = "cosign"
