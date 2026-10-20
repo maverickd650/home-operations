@@ -53,7 +53,7 @@ spec:
           - /bin/sh
           - -c
           - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
-        name: headlamp-plugins
+        name: headlamp-plugins-flux
         volumeMounts:
           - mountPath: /build/plugins
             name: headlamp-plugins
@@ -63,7 +63,7 @@ spec:
           - /bin/sh
           - -c
           - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
-        name: headlamp-plugins
+        name: headlamp-plugins-cnpg
         volumeMounts:
           - mountPath: /build/plugins
             name: headlamp-plugins
