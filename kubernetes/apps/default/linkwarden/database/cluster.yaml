@@ -6,6 +6,8 @@ metadata:
   name: linkwarden-postgres
   annotations:
     cnpg.io/skipEmptyWalArchive: "enabled"
+  labels:
+    cnpg.io/reload: "on"
 spec:
   instances: 2
   imageCatalogRef:
