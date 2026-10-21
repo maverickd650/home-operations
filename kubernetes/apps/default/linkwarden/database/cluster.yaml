@@ -22,7 +22,7 @@ spec:
   primaryUpdateMethod: switchover
   enableSuperuserAccess: false
   affinity:
-    podAntiAffinityType: required
+    podAntiAffinityType: preferred
   storage:
     size: 10Gi
     storageClass: longhorn
