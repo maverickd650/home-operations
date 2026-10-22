@@ -57,6 +57,16 @@ spec:
         volumeMounts:
           - mountPath: /build/plugins
             name: headlamp-plugins
+      - # Install CNPG plugin
+        image: ghcr.io/cloudnative-pg/cnpg-headlamp-plugin:v0.1.6@sha256:7f5bf8a9b346c8819d3633d5bf0749a4f3a47ddcdd3d2889929339930bb1f3e2
+        command:
+          - /bin/sh
+          - -c
+          - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
+        name: headlamp-plugins-cnpg
+        volumeMounts:
+          - mountPath: /build/plugins
+            name: headlamp-plugins
     clusterRoleBinding:
       create: false
     config:
