@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: linkwarden-store
+spec:
+  configuration:
+    destinationPath: s3://linkwarden/cnpg
+    endpointURL: http://192.168.50.118:30188
+    s3Credentials:
+      accessKeyId:
+        name: linkwarden-postgres-backup-credentials
+        key: accesskey
+      secretAccessKey:
+        name: linkwarden-postgres-backup-credentials
+        key: secretkey
+    wal:
+      compression: zstd
+    data:
+      compression: gzip
+  retentionPolicy: "30d"
