@@ -40,3 +40,8 @@ spec:
       owner: linkwarden
       secret:
         name: linkwarden-postgres-credentials
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: linkwarden-store
