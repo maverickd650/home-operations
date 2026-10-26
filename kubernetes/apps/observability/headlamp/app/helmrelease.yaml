@@ -30,7 +30,7 @@ spec:
             value: "6443"
           - name: KUBECONFIG
             value: /home/headlamp/.config/Headlamp/kubeconfigs/config
-        image: docker.io/rancher/shell:v0.8.2@sha256:1eeed72d4eda486de13403c4ae6e9d29a0842edc35d0f4a8fb7b0dab79d04be9
+        image: docker.io/rancher/shell:v0.9.0@sha256:1b86c124fabbccb056a6f2a899a75b3a219a09ef42a081d3aa4f83cfac95cbc3
         name: create-kubeconfig
         securityContext:
           capabilities:
