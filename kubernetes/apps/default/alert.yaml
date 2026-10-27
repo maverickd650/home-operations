@@ -22,8 +22,8 @@ spec:
       remoteRef:
         key: MAVBOT_PEM
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/provider_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/provider_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Provider
 metadata:
   name: github-status
@@ -34,8 +34,8 @@ spec:
   secretRef:
     name: github-status-token-secret
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/provider_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/provider_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Provider
 metadata:
   name: github-status-homepage
@@ -46,8 +46,8 @@ spec:
   secretRef:
     name: github-status-token-secret
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/provider_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/provider_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Provider
 metadata:
   name: github-status-rss2discord
@@ -58,8 +58,8 @@ spec:
   secretRef:
     name: github-status-token-secret
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Alert
 metadata:
   name: github-status
@@ -83,8 +83,8 @@ spec:
     - kind: Kustomization
       name: "renovate-operator-jobs"
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Alert
 metadata:
   name: github-status-homepage
@@ -96,8 +96,8 @@ spec:
     - kind: Kustomization
       name: "homepage-config"
 ---
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/notification.toolkit.fluxcd.io/alert_v1.json
+apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Alert
 metadata:
   name: github-status-rss2discord
