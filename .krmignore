@@ -1,0 +1,5 @@
+# Non-Kubernetes tooling files that flate/konflate should not try to decode as manifests
+.mise/
+.github/
+.renovate/
+.vscode/
