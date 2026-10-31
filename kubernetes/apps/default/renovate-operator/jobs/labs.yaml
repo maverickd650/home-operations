@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/generators.external-secrets.io/githubaccesstoken_v1alpha1.json
+apiVersion: generators.external-secrets.io/v1alpha1
+kind: GithubAccessToken
+metadata:
+  name: labs-auth-token
+spec:
+  appIDRef:
+    name: labs-bot-secret
+    key: labbot-app-id
+  installIDRef:
+    name: labs-bot-secret
+    key: labbot-app-install
+  auth:
+    privateKey:
+      secretRef:
+        name: labs-bot-secret
+        key: labbot-app-pem
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: labs-auth-token
+spec:
+  refreshInterval: "30m0s"
+  target:
+    name: labs-repos
+    template:
+      type: Opaque
+      engineVersion: v2
+      data:
+        GITHUB_COM_TOKEN: "{{ .token }}"
+        GITHUB_COM_USER: TWF2ZXJpY2s2NTA=
+        RENOVATE_TOKEN: "{{ .token }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: GithubAccessToken
+          name: labs-auth-token
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/renovate-operator.mogenius.com/renovatejob_v1alpha1.json
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: labs-repositories
+  namespace: default
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  provider:
+    name: github
+  discoveryFilters:
+    - "maverickd650-labs/rss2discord"
+  extraEnv:
+    - name: RENOVATE_ALLOWED_ENV
+      value: MISE_TRUSTED_CONFIG_PATHS
+    - name: RENOVATE_ALLOWED_COMMANDS
+      value: '["pnpm run bundle"]'
+    - name: RENOVATE_ALLOW_PLUGINS
+      value: "true"
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_REDIS_URL
+      value: "redis://dragonfly.system.svc.cluster.local:6379"
+    - name: RENOVATE_REDIS_PREFIX
+      value: "labs:"
+  image: ghcr.io/renovatebot/renovate:44.198.3
+  parallelism: 1
+  resources:
+    requests:
+      cpu: 735m
+      memory: 2420Mi
+    limits:
+      memory: 2420Mi
+  schedule: "30 */6 * * *"
+  secretRef: labs-repos
+  webhook:
+    enabled: true
+    authentication:
+      enabled: false
