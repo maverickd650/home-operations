@@ -116,7 +116,6 @@ spec:
   provider:
     name: github
   discoveryFilters:
-    - "maverickd650/cluster-docs"
     - "maverickd650/homepage-config"
     - "maverickd650/rss2discord-config"
   extraEnv:
